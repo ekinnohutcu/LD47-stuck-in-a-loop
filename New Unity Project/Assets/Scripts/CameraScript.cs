@@ -4,15 +4,31 @@ using UnityEngine;
 
 public class CameraScript : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public GameObject target;
+
+    public float xSpeed = 3.5f;
+
+    private float sensitivity = 17f;
+
+    private float minFov = 35;
+    private float maxFov = 100;
+    
+    
 
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetMouseButton(1))
+        {
+            transform.RotateAround(target.transform.position,transform.up, Input.GetAxis("Mouse X") * xSpeed);
+            transform.RotateAround(target.transform.position,transform.right, -Input.GetAxis("Mouse Y"));
+            
+        }
         
+        //zoom
+        float fov = Camera.main.fieldOfView;
+        fov += Input.GetAxis("Mouse ScrollWheel") * -sensitivity;
+        fov = Mathf.Clamp(fov,minFov, maxFov);
+        Camera.main.fieldOfView = fov;
     }
 }
